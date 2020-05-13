@@ -6,12 +6,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('users')
+@Entity('users') // Referencia a qual tabela do banco iremos utilizar
 class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid') // Chave Primaria
   id: string;
 
-  @Column()
+  @Column() // Coluna
   name: string;
 
   @Column()
@@ -20,10 +20,13 @@ class User {
   @Column()
   password: string;
 
-  @CreateDateColumn()
+  @Column()
+  avatar: string;
+
+  @CreateDateColumn() // Data da Criação no Banco
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn() // Data de alteração
   updated_at: Date;
 }
 

@@ -1,3 +1,4 @@
+// Esta rota cuida dos agendamentos de nossa aplicação
 import { Router } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { parseISO } from 'date-fns';
@@ -26,6 +27,7 @@ appointmentsRouter.post('/', async (request, response) => {
 
     const createAppointmentServices = new CreateAppointmentServices();
 
+    // Chamada de criação do agendamento, onde passamos a data  e o Id do usuario
     const appointment = await createAppointmentServices.execute({
       date: parsedDate,
       provider_id,

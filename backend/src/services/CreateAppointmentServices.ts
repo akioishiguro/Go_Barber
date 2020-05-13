@@ -15,6 +15,7 @@ class CreateAppointmentService {
 
     const appointmentDate = startOfHour(date); // Agendamento comeca em hora em hora
 
+    // Verifica se já existe, algum agendamento neste horario
     const findAppointmentInSameDate = await appointmentsRepository.findByDate(
       appointmentDate,
     );
@@ -23,11 +24,13 @@ class CreateAppointmentService {
       throw Error('This appointment is alredy booked');
     }
 
+    // Ele cria um agendamento através do Id do usuario
     const appointment = appointmentsRepository.create({
       provider_id,
       date: appointmentDate,
     });
 
+    // Salva o agendamento no banco
     await appointmentsRepository.save(appointment);
 
     return appointment;

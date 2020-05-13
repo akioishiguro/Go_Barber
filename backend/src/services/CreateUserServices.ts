@@ -3,6 +3,8 @@ import { hash } from 'bcryptjs';
 
 import User from '../models/User';
 
+import AppError from '../errors/AppError';
+
 interface Request {
   name: string;
   email: string;
@@ -19,7 +21,7 @@ class CreateUserService {
     });
 
     if (checkUserExist) {
-      throw new Error('Email address alredy user!');
+      throw new AppError('Email address alredy user!');
     }
 
     // Criptografia da senha

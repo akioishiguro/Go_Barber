@@ -26,13 +26,10 @@ class CreateAppointmentService {
     }
 
     // Ele cria um agendamento através do Id do usuario
-    const appointment = appointmentsRepository.create({
+    const appointment = await appointmentsRepository.create({
       provider_id,
       date: appointmentDate,
     });
-
-    // Salva o agendamento no banco
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }

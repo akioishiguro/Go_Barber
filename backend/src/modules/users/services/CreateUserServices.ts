@@ -1,23 +1,21 @@
-import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
 import AppError from 'shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
+import IUserRepository from '@modules/users/repositories/IUserRepository';
 
-interface Request {
+interface IRequest {
   name: string;
   email: string;
   password: string;
 }
 
 class CreateUserService {
-  public async execute({ name, email, password }: Request): Promise<User> {
-    const usersRepository = getRepository(User);
+  constructor(private usersRepository: IUserRepository) {}
 
+  public async execute({ name, email, password }: IRequest): Promise<User> {
     // Verifica se o email ja não foi usado
-    const checkUserExist = await usersRepository.findOne({
-      where: { email },
-    });
+    const checkUserExist = await this.usersRepository.findByEmail(email);
 
     if (checkUserExist) {
       throw new AppError('Email address alredy user!');
@@ -26,13 +24,11 @@ class CreateUserService {
     // Criptografia da senha
     const hashedPassword = await hash(password, 8);
 
-    const user = usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
     });
-
-    await usersRepository.save(user);
 
     return user;
   }

@@ -6,7 +6,7 @@ import User from '@modules/users/infra/typeorm/entities/User';
 import authConfig from '@config/auth';
 
 import AppError from '@shared/errors/AppError';
-import IUserRepository from '@modules/users/repositories/IUserRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 interface IRequest {
   email: string;
@@ -22,7 +22,7 @@ interface IResponse {
 class AuthenticateUserService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUserRepository,
+    private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {

@@ -1,7 +1,7 @@
 // Verifica a Disponilidade dos horarios para agendamento
 
 import { injectable, inject } from 'tsyringe';
-import { getHours } from 'date-fns';
+import { getHours, isAfter } from 'date-fns';
 
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -48,15 +48,22 @@ class ListProviderDayAvailabitityService {
       (_, index) => index + hourStart,
     );
 
+    // Pegamos o horario atual para podermos comparar mais tarde
+    const currentDate = new Date(Date.now());
+
     // Função que percorre todos os horarios de um determinado dia, para saber se ele esta vago ou não
     const availability = eachHourArray.map(hour => {
+      // Verficia se naquele horario ja possui um agendamento, caso exista, ele retorna true
       const hasAppointmentInHour = appointments.find(
         appointment => getHours(appointment.date) === hour,
       );
 
+      const compareDate = new Date(year, month - 1, day, hour);
+
+      // Available falso quer dizer q o horario esta preenchido - Tbm verificamos se o horario de agendamento não é depois da hora atual
       return {
         hour,
-        available: !hasAppointmentInHour, // falso quer dizer q o horario esta preenchido
+        available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
       };
     });
 

@@ -7,6 +7,7 @@ import IAppointmentsReposiry from '@modules/appointments/repositories/IAppointme
 
 interface IRequest {
   provider_id: string;
+  user_id: string;
   date: Date;
 }
 
@@ -17,7 +18,11 @@ class CreateAppointmentService {
     private appointmentsRepository: IAppointmentsReposiry,
   ) {}
 
-  public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
+  public async execute({
+    date,
+    provider_id,
+    user_id,
+  }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date); // Agendamento comeca em hora em hora
 
     // Verifica se já existe, algum agendamento neste horario
@@ -32,6 +37,7 @@ class CreateAppointmentService {
     // Ele cria um agendamento através do Id do usuario
     const appointment = await this.appointmentsRepository.create({
       provider_id,
+      user_id,
       date: appointmentDate,
     });
 

@@ -1,3 +1,5 @@
+// Criando schema(schema é como se fosse uma tabela no banco relacional) no bando
+
 import {
   ObjectID,
   Entity,

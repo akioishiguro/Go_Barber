@@ -1,3 +1,5 @@
+// Metodos possiveis que a notificação permite
+
 import { MongoRepository, getMongoRepository } from 'typeorm';
 
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
@@ -12,6 +14,7 @@ class NotificationsRepository implements INotificationsRepository {
     this.ormRepository = getMongoRepository(Notification, 'mongo');
   }
 
+  // Criamos a notificação
   public async create({
     content,
     recipient_id,

@@ -1,6 +1,7 @@
 // Esta rota cuida dos usuarios de nossa aplicação
 import { Router } from 'express';
 import multer from 'multer';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 import uploadConfig from '@config/upload';
 
@@ -14,7 +15,17 @@ const usersController = new UsersController();
 const userAvatarController = new UserAvatarController();
 
 // Criação de um Usuario
-usersRouter.post('/', usersController.create);
+usersRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    },
+  }),
+  usersController.create,
+);
 
 // Adicionar um Avatar - Utilizamos o ensureAuthenticated, para certificicar a autenticação
 usersRouter.patch(
